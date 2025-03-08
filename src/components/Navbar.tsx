@@ -12,7 +12,7 @@ const Navbar = ({ title, showBack, onBack }: NavbarProps) => {
     <nav className="sticky top-0 z-10 bg-gray-100 border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4">
         <div className="h-14 flex items-center">
-          <div className="flex-none">
+          <div className="w-10">
             {showBack && (
               <button
                 onClick={onBack}
@@ -26,7 +26,7 @@ const Navbar = ({ title, showBack, onBack }: NavbarProps) => {
           <h1 className="flex-1 text-xl font-semibold text-gray-900 text-center truncate">
             {title}
           </h1>
-          <div className="flex-none w-10" />
+          <div className="w-10" />
         </div>
       </div>
     </nav>
