@@ -3,17 +3,33 @@ import '@testing-library/jest-dom';
 import UserCard from '../UserCard';
 import { User } from '@/types/user';
 
-// Mock next/image since it's not supported in jest environment
+// Define types for Image props
+type ImageProps = {
+  src: string;
+  alt: string;
+  fill?: boolean;
+  style?: React.CSSProperties;
+  className?: string;
+};
+
+/* eslint-disable @next/next/no-img-element */
 jest.mock('next/image', () => ({
   __esModule: true,
-  default: (props: any) => {
-    const imgProps = {
-      ...props,
-      fill: props.fill ? 'true' : undefined,
-    };
-    return <img {...imgProps} />;
+  default: ({ src, alt, fill, className, style }: ImageProps) => {
+    return (
+      <img
+        src={src}
+        alt={alt}
+        className={className}
+        style={{
+          ...(fill ? { objectFit: 'cover' } : {}),
+          ...style,
+        }}
+      />
+    );
   },
 }));
+/* eslint-enable @next/next/no-img-element */
 
 const mockUser: User = {
   id: 1,
