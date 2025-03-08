@@ -16,7 +16,7 @@ const Loading = () => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-white/80">
-      <video autoPlay muted loop className="w-[100px] h-[100px]">
+      <video autoPlay muted loop className="w-full h-full max-w-screen-lg">
         <source src="/assets/pulse.mp4" type="video/mp4" />
       </video>
     </div>
