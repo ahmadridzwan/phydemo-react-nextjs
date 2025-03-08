@@ -17,13 +17,13 @@ const Navbar = ({ title, showBack, onBack }: NavbarProps) => {
               <button
                 onClick={onBack}
                 className="h-10 w-10 flex items-center justify-center rounded-lg text-gray-600 
-                  hover:text-gray-900 hover:bg-gray-200 transition-colors duration-200"
+                  hover:text-gray-900 hover:bg-gray-200 transition-colors duration-200 cursor-pointer"
               >
                 <ChevronLeftIcon className="h-6 w-6" />
               </button>
             )}
           </div>
-          <h1 className="flex-1 text-xl font-semibold text-gray-900 text-center truncate">
+          <h1 className="flex-1 text-xl font-semibold text-gray-900 text-center">
             {title}
           </h1>
           <div className="w-10" />
