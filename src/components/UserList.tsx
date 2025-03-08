@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { User } from '@/types/user';
 import { fetchUsers } from '@/services/api';
 import UserCard from './UserCard';
@@ -22,36 +22,33 @@ const UserList = () => {
   const initialLoadRef = useRef(true);
   const router = useRouter();
 
-  const loadUsers = useCallback(
-    async (pageNum: number = 1) => {
-      if (pageNum > totalPages && totalPages !== 1) return;
+  const loadUsers = async (pageNum: number) => {
+    if (pageNum > totalPages && totalPages !== 1) return;
 
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await fetchUsers(pageNum);
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await fetchUsers(pageNum);
 
-        if (initialLoadRef.current) {
-          setUsers(response.data);
-        } else {
-          setUsers((prev) => [...prev, ...response.data]);
-        }
-
-        setTotalPages(response.total_pages);
-        setHasMore(pageNum < response.total_pages);
-
-        if (initialLoadRef.current) {
-          setInitialLoading(false);
-          initialLoadRef.current = false;
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load users');
-      } finally {
-        setLoading(false);
+      if (initialLoadRef.current) {
+        setUsers(response.data);
+      } else {
+        setUsers((prev) => [...prev, ...response.data]);
       }
-    },
-    [totalPages]
-  );
+
+      setTotalPages(response.total_pages);
+      setHasMore(pageNum < response.total_pages);
+
+      if (initialLoadRef.current) {
+        setInitialLoading(false);
+        initialLoadRef.current = false;
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load users');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Initial load with delay
   useEffect(() => {
@@ -59,14 +56,14 @@ const UserList = () => {
       loadUsers(1);
     }, 3000);
     return () => clearTimeout(timer);
-  }, [loadUsers]);
+  }, []);
 
   // Handle page changes
   useEffect(() => {
     if (!initialLoadRef.current && page > 1 && page <= totalPages) {
       loadUsers(page);
     }
-  }, [page, totalPages, loadUsers]);
+  }, [page]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -90,12 +87,6 @@ const UserList = () => {
     return () => observer.disconnect();
   }, [hasMore, loading, page, totalPages]);
 
-  useEffect(() => {
-    if (page > totalPages) {
-      setPage(1);
-    }
-  }, [page, totalPages]);
-
   const handleUserClick = (user: User) => {
     router.push(`/users/${user.id}`);
   };
@@ -110,7 +101,7 @@ const UserList = () => {
       <div className="min-h-screen flex flex-col">
         <Navbar title="Users" />
         <main className="flex-1">
-          <div className="container mx-auto px-4 py-8">
+          <div className="container mx-auto px-4 py-4">
             <div
               className={
                 isMobile
