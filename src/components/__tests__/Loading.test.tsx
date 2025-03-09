@@ -16,9 +16,8 @@ describe('Loading Component', () => {
     render(<Loading />);
     const videoElement = screen.getByTestId('loading-video');
     expect(videoElement).toBeInTheDocument();
-    expect(videoElement.querySelector('source')?.getAttribute('src')).toBe(
-      '/assets/pulse.mp4'
-    );
+    const src = videoElement.getAttribute('src');
+    expect(decodeURIComponent(src || '')).toContain('/assets/pulse.gif');
   });
 
   it('disappears after 3 seconds', () => {
